@@ -1067,7 +1067,10 @@ function Experience({ onAdvice }) {
             <p className="eyebrow">C / 建议 · FIELD NOTES</p>
             <h2>建议</h2>
             <p className="lead">
-              以下是我的个人体验，不是唯一答案。希望它能帮你更早找到自己的节奏。
+              焦虑是因为你有解决问题的能力。
+            </p>
+            <p className="lead">
+              祝各位在秋天开启新的故事。
             </p>
           </Reveal>
           <ExperienceReel />
