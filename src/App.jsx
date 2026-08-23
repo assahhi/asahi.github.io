@@ -14,6 +14,8 @@ import {
   X,
 } from "@phosphor-icons/react";
 
+const assetUrl = (path) => `${import.meta.env.BASE_URL}${path.replace(/^\/+/, "")}`;
+
 const chapters = [
   { id: "intro", short: "START", title: "开场" },
   { id: "about", short: "A", title: "About Me" },
@@ -54,83 +56,138 @@ const experienceRoute = [
 const personalCoursePlan = [
   {
     index: "01",
-    title: "第一学期",
+    title: "Term1 - Sem1",
     year: "2025",
     period: "9 月 — 12 月",
-    courses: ["课程 1（待填写）", "课程 2（待填写）", "课程 3（待填写）"],
-    note: "可补充课程组合逻辑",
+    courses: ["*企业会计",
+              "*管理会计",
+              "*经济法",
+              "*税法",
+              "*思政*2",
+              "法务与会计预测",
+              "会计数据决策与可视化"
+              ],
+    note: "体验校园生活+奠定高绩点+铺垫超长实习期",
   },
   {
     index: "02",
-    title: "第二学期",
+    title: "Term1 - Sem2",
     year: "2026",
     period: "1 月 — 5 月",
-    courses: ["课程 1（待填写）", "课程 2（待填写）", "课程 3（待填写）"],
-    note: "可补充求职或实习节奏",
+    courses: ["*企业会计进阶",
+              "*审计与认证业务",
+              "*财务管理",
+              "数据挖掘和商业分析",
+              "金融市场的文本分析"],
+    note: "完成7必修+4选修，同时投递summer，港中深5月结课即可快速到岗且无导师限制，较其他学校提前2个月，竞争力更强",
   },
   {
     index: "03",
-    title: "第三学期",
+    title: "Term2 - Sem1",
     year: "2026",
     period: "9 月 — 12 月",
-    courses: ["课程 / 交换（待填写）", "实习安排（待填写）"],
-    note: "可补充交换、实习或研究安排",
+    courses: ["Totally Fully for Intership"],
+    note: "选修实习课，summer结束后根据梦中情岗直接投递/补更多实习",
   },
   {
     index: "04",
-    title: "第四学期",
+    title: "Term2 - Sem2",
     year: "2027",
     period: "1 月 — 5 月",
-    courses: ["课程 1（待填写）", "毕业安排（待填写）"],
-    note: "可补充毕业与去向规划",
+    courses: ["Business Valuation and Financial Statement Analysis",],
+    note: "边实习边上课，完成最后一门选修课，毕业",
   },
 ];
 
-const programmeColumns = [
-  {
-    index: "01",
-    kicker: "COMMON CORE",
-    title: "共通必修课",
-    badge: "7 门 / 21 学分",
-    courses: [
-      "企业会计",
-      "企业会计进阶",
-      "管理会计",
-      "审计与认证业务",
-      "财务管理",
-      "中国税法",
-      "中国经济法与市场监管",
-    ],
-  },
-  {
-    index: "02",
-    kicker: "ACCOUNTING ANALYTICS",
-    title: "AA · 会计分析",
-    badge: "方向选修",
-    courses: [
-      "会计数据策略与可视化",
-      "企业估价和财务报表分析",
-      "数据挖掘和商业分析",
-      "会计分析研究",
-      "法务会计与预测分析",
-      "金融市场的文本分析",
-    ],
-  },
-  {
-    index: "03",
-    kicker: "PROFESSIONAL ACCOUNTING",
-    title: "PA · 专业会计",
-    badge: "方向选修",
-    courses: [
-      "收益质量分析",
-      "会计和财务战略",
-      "企业估价和财务报表分析",
-      "当代中国金融市场的问题",
-      "中国公司管治与社会责任",
-      "会计研究",
-    ],
-  },
+const commonRequiredCourses = [
+  "企业会计",
+  "企业会计进阶",
+  "管理会计",
+  "审计与认证业务",
+  "财务管理",
+  "中国税法",
+  "中国经济法与市场监管",
 ];
+
+const accountingAnalyticsCourses = [
+  "会计数据策略与可视化",
+  "企业估价和财务报表分析",
+  "数据挖掘和商业分析",
+  "会计分析研究",
+  "法务会计与预测分析",
+  "金融市场的文本分析",
+];
+
+const professionalAccountingCourses = [
+  "收益质量分析",
+  "会计和财务战略",
+  "企业估价和财务报表分析",
+  "当代中国金融市场的问题",
+  "中国公司管治与社会责任",
+  "会计研究",
+];
+
+const programmeVersions = {
+  "2025": {
+    ratio: "7+5",
+    ratioLabel: "必修 + 选修",
+    taxLocation: "必修课",
+    columns: [
+      {
+        index: "01",
+        kicker: "COMMON CORE",
+        title: "必修课",
+        badge: "7 门 / 21 学分",
+        courses: commonRequiredCourses,
+      },
+      {
+        index: "02",
+        kicker: "ACCOUNTING ANALYTICS",
+        title: "AA · 会计分析",
+        badge: "方向选修",
+        courses: accountingAnalyticsCourses,
+      },
+      {
+        index: "03",
+        kicker: "PROFESSIONAL ACCOUNTING",
+        title: "PA · 专业会计",
+        badge: "方向选修",
+        courses: professionalAccountingCourses,
+      },
+    ],
+  },
+  "2026": {
+    ratio: "6+6",
+    ratioLabel: "主修 + 选修",
+    taxLocation: "PA 选修",
+    columns: [
+      {
+        index: "01",
+        kicker: "COMMON CORE",
+        title: "主修课",
+        badge: "6 门",
+        courses: commonRequiredCourses.filter((course) => course !== "中国税法"),
+      },
+      {
+        index: "02",
+        kicker: "ACCOUNTING ANALYTICS",
+        title: "AA · 会计分析",
+        badge: "方向选修",
+        courses: accountingAnalyticsCourses,
+      },
+      {
+        index: "03",
+        kicker: "PROFESSIONAL ACCOUNTING",
+        title: "PA · 专业会计",
+        badge: "方向选修 · +1",
+        courses: [
+          ...professionalAccountingCourses,
+          { name: "中国税法", shifted: true },
+        ],
+      },
+    ],
+  },
+};
 
 const takeaways = [
   {
@@ -160,7 +217,7 @@ function scrollToChapter(id) {
 function Brand() {
   return (
     <button className="brand" type="button" onClick={() => scrollToChapter("intro")} aria-label="返回开场">
-      <img src="/assets/cuhksz-crest.png" alt="香港中文大学（深圳）校徽" />
+      <img src={assetUrl("assets/cuhksz-crest.png")} alt="香港中文大学（深圳）校徽" />
       <span>
         <strong>香港中文大学（深圳）</strong>
         <small>The Chinese University of Hong Kong, Shenzhen</small>
@@ -331,11 +388,11 @@ function Hero({ onAdvice }) {
             animate={{ opacity: 1, x: 0, scale: 1 }}
             transition={{ duration: 0.95, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
           >
-            <img src="/assets/liu-canwei-portrait-web.jpg" alt="刘璨玮证件照" />
+            <img src={assetUrl("assets/liu-canwei-portrait-web.jpg")} alt="刘璨玮证件照" />
           </motion.div>
           <motion.img
             className="route-overlay"
-            src="/assets/route-overlay.png"
+            src={assetUrl("assets/route-overlay.png")}
             alt=""
             initial={reduceMotion ? false : { clipPath: "inset(0 0 100% 0)", opacity: 0 }}
             animate={{ clipPath: "inset(0 0 0% 0)", opacity: 1 }}
@@ -347,7 +404,7 @@ function Hero({ onAdvice }) {
             animate={{ opacity: 1, rotate: -6, scale: 1 }}
             transition={{ duration: 0.65, delay: 1.02 }}
           >
-            <img src="/assets/cuhksz-crest.png" alt="" />
+            <img src={assetUrl("assets/cuhksz-crest.png")} alt="" />
             <span>FIELD GUIDE</span>
           </motion.div>
         </div>
@@ -415,49 +472,167 @@ function About() {
 }
 
 function Programme() {
+  const reduceMotion = useReducedMotion();
+  const [programmeYear, setProgrammeYear] = useState("2025");
+  const programmeSectionRef = useRef(null);
+  const programmeTimerRef = useRef(null);
+  const programmeAnimationPlayedRef = useRef(false);
+  const programmeVersion = programmeVersions[programmeYear];
+
+  useEffect(() => {
+    const section = programmeSectionRef.current;
+    if (!section) return undefined;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting || programmeAnimationPlayedRef.current) return;
+        programmeAnimationPlayedRef.current = true;
+        setProgrammeYear("2025");
+        programmeTimerRef.current = window.setTimeout(
+          () => setProgrammeYear("2026"),
+          reduceMotion ? 0 : 1250,
+        );
+        observer.disconnect();
+      },
+      { threshold: 0.45 },
+    );
+
+    observer.observe(section);
+    return () => {
+      observer.disconnect();
+      if (programmeTimerRef.current) window.clearTimeout(programmeTimerRef.current);
+    };
+  }, [reduceMotion]);
+
+  const selectProgrammeYear = (year) => {
+    if (programmeTimerRef.current) window.clearTimeout(programmeTimerRef.current);
+    setProgrammeYear(year);
+  };
+
   return (
-    <section className="chapter programme" id="programme" data-chapter="2">
+    <section className="chapter programme" id="programme" data-chapter="2" ref={programmeSectionRef}>
       <div className="section-grid">
         <Reveal className="section-heading programme-heading">
           <p className="eyebrow">B1 / 项目介绍 · COURSE CATALOGUE</p>
-          <h2>两条方向，一套会计底座</h2>
+          <h2>课纲升级，方向更清晰</h2>
           <p className="lead">
-            先完成共通必修，再从会计分析（AA）或专业会计（PA）方向选择自己的课程组合。
+            2026 级将课程结构从 7+5 调整为 6+6，并把“中国税法”由必修课转入 PA 方向选修课。
           </p>
         </Reveal>
 
-        <Reveal className="programme-facts" delay={0.08}>
-          <span><strong>24</strong> 个月</span>
-          <span><strong>36</strong> 专业学分</span>
-          <span><strong>7+5</strong> 必修 + 选修</span>
-          <span><strong>≥3</strong> 同方向选修</span>
+        <Reveal className="curriculum-control" delay={0.08}>
+          <div className="curriculum-switch" role="group" aria-label="选择课纲年份">
+            {Object.keys(programmeVersions).map((year) => (
+              <button
+                type="button"
+                key={year}
+                className={programmeYear === year ? "is-active" : ""}
+                aria-pressed={programmeYear === year}
+                onClick={() => selectProgrammeYear(year)}
+              >
+                {year} 级
+              </button>
+            ))}
+          </div>
+          <motion.div
+            className="programme-facts"
+            key={programmeYear}
+            aria-live="polite"
+            initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <span><strong>{programmeYear}</strong> 级课纲</span>
+            <span><strong>36</strong> 专业学分</span>
+            <span><strong>{programmeVersion.ratio}</strong> {programmeVersion.ratioLabel}</span>
+            <span><strong>TAX</strong> {programmeVersion.taxLocation}</span>
+          </motion.div>
         </Reveal>
 
-        <div className="programme-columns">
-          {programmeColumns.map((column, index) => (
-            <Reveal className="programme-column" key={column.title} delay={index * 0.08}>
-              <div className="course-column-meta">
-                <span className="column-index">{column.index}</span>
-                <span className="course-kicker">{column.kicker}</span>
-                <span className="course-badge">{column.badge}</span>
-              </div>
-              <h3>{column.title}</h3>
-              <ol className="course-list">
-                {column.courses.map((course, courseIndex) => (
-                  <li key={course}>
-                    <span>{String(courseIndex + 1).padStart(2, "0")}</span>
-                    {course}
-                  </li>
-                ))}
-              </ol>
-            </Reveal>
-          ))}
-        </div>
+        <Reveal className="curriculum-shift" delay={0.12}>
+          <div className="curriculum-shift-copy">
+            <span>CURRICULUM SHIFT · 2025 → 2026</span>
+            <strong>7+5 调整为 6+6</strong>
+            <small>一门主修课转为方向选修课</small>
+          </div>
+          <div className="tax-shift-map" aria-label="中国税法由2025级必修课调整为2026级PA方向选修课">
+            <motion.div
+              className={`tax-shift-node${programmeYear === "2025" ? " is-active" : ""}`}
+              animate={{ opacity: programmeYear === "2025" ? 1 : 0.32, scale: programmeYear === "2025" ? 1 : 0.96 }}
+            >
+              <small>2025 · 必修课</small>
+              <strong>中国税法</strong>
+            </motion.div>
+            <motion.div
+              className="tax-shift-arrow"
+              animate={reduceMotion ? undefined : { x: [0, 6, 0] }}
+              transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <ArrowRight size={24} weight="bold" />
+            </motion.div>
+            <motion.div
+              className={`tax-shift-node${programmeYear === "2026" ? " is-active" : ""}`}
+              animate={{ opacity: programmeYear === "2026" ? 1 : 0.32, scale: programmeYear === "2026" ? 1 : 0.96 }}
+            >
+              <small>2026 · PA 选修</small>
+              <strong>中国税法</strong>
+            </motion.div>
+          </div>
+        </Reveal>
+
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            className="programme-columns"
+            key={programmeYear}
+            initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reduceMotion ? undefined : { opacity: 0, y: -14 }}
+            transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {programmeVersion.columns.map((column, index) => (
+              <motion.article
+                className="programme-column"
+                key={column.title}
+                initial={reduceMotion ? false : { opacity: 0, x: 18 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.42, delay: index * 0.06 }}
+              >
+                <div className="course-column-meta">
+                  <span className="column-index">{column.index}</span>
+                  <span className="course-kicker">{column.kicker}</span>
+                  <span className="course-badge">{column.badge}</span>
+                </div>
+                <h3>{column.title}</h3>
+                <ol className="course-list">
+                  {column.courses.map((course, courseIndex) => {
+                    const courseName = typeof course === "string" ? course : course.name;
+                    const shifted = typeof course === "object" && course.shifted;
+                    return (
+                      <li className={shifted ? "is-shifted" : ""} key={courseName}>
+                        <span>{String(courseIndex + 1).padStart(2, "0")}</span>
+                        {courseName}
+                        {shifted ? <em>FROM CORE</em> : null}
+                      </li>
+                    );
+                  })}
+                </ol>
+              </motion.article>
+            ))}
+          </motion.div>
+        </AnimatePresence>
 
         <Reveal className="programme-foot" delay={0.2}>
-          <p>
-            毕业清单：36 个专业学分 + 6 门商业基础课（0 学分）+ 2 门思政课。另有非细分方向选修：价值会计、金融市场与工具。
-          </p>
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.p
+              key={programmeYear}
+              initial={reduceMotion ? false : { opacity: 0, x: -12 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={reduceMotion ? undefined : { opacity: 0, x: 12 }}
+            >
+              {programmeYear === "2025"
+                ? "2025级：7 门必修 + 5 门选修；中国税法属于必修课。"
+                : "2026级改革：6 门主修 + 6 门选修；中国税法调整为 PA 方向选修课。"}
+            </motion.p>
+          </AnimatePresence>
           <div className="programme-links">
             <a href="https://msacct.cuhk.edu.cn/zh-hans/curriculum" target="_blank" rel="noreferrer">
               课程设置 <ArrowRight size={17} />
@@ -478,10 +653,8 @@ function PersonalCoursePlan() {
       <div className="section-grid">
         <Reveal className="section-heading course-plan-heading">
           <p className="eyebrow">B2 / 我的课程安排 · PERSONAL COURSE MAP</p>
-          <h2>我的 24 个月课程地图</h2>
-          <p className="lead">
-            这一整页留给你的真实选课路径：课程、交换、实习与求职节奏，都可以沿时间轴补充。
-          </p>
+          <h2>Course Schedule</h2>
+
         </Reveal>
 
         <Reveal className="course-plan-note" delay={0.08}>
@@ -510,7 +683,6 @@ function PersonalCoursePlan() {
         </div>
 
         <Reveal className="course-plan-foot" delay={0.18}>
-          <span>建议讲法：为什么这样选 → 课程之间如何衔接 → 如何为实习与求职留时间</span>
           <button className="text-action" type="button" onClick={() => scrollToChapter("experience")}>
             下一页：综合体验 <ArrowRight size={18} />
           </button>

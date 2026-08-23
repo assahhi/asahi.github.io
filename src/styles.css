@@ -571,12 +571,48 @@ a:focus-visible {
 
 .programme .section-grid {
   grid-template-columns: 1fr auto;
-  grid-template-rows: auto auto auto;
-  gap: clamp(30px, 4vh, 48px) 5vw;
+  grid-template-rows: auto auto auto auto;
+  gap: clamp(18px, 2.6vh, 30px) 5vw;
+  padding-top: clamp(34px, 4.6vh, 54px);
+  padding-bottom: clamp(30px, 4vh, 48px);
 }
 
 .programme-heading {
   max-width: 790px;
+}
+
+.curriculum-control {
+  width: min(390px, 32vw);
+  align-self: end;
+}
+
+.curriculum-switch {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin-bottom: 10px;
+  border: 1px solid var(--purple);
+  background: rgba(245, 241, 232, 0.7);
+}
+
+.curriculum-switch button {
+  min-height: 38px;
+  border: 0;
+  border-right: 1px solid var(--purple);
+  background: transparent;
+  color: var(--purple);
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.curriculum-switch button:last-child {
+  border-right: 0;
+}
+
+.curriculum-switch button.is-active {
+  background: var(--purple);
+  color: #fff9ea;
 }
 
 .programme-facts {
@@ -585,6 +621,85 @@ a:focus-visible {
   align-self: end;
   border-top: 1px solid var(--purple);
   border-left: 1px solid var(--purple);
+}
+
+.curriculum-shift {
+  grid-column: 1 / -1;
+  min-height: 72px;
+  display: grid;
+  grid-template-columns: minmax(250px, 0.72fr) minmax(560px, 1.28fr);
+  align-items: center;
+  gap: 3vw;
+  padding: 12px 18px;
+  border: 1px solid rgba(75, 33, 122, 0.28);
+  background: rgba(75, 33, 122, 0.045);
+}
+
+.curriculum-shift-copy {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: baseline;
+  gap: 3px 18px;
+}
+
+.curriculum-shift-copy > span {
+  grid-column: 1 / -1;
+  color: var(--purple);
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.11em;
+}
+
+.curriculum-shift-copy strong {
+  color: var(--purple-dark);
+  font-size: clamp(18px, 1.6vw, 25px);
+}
+
+.curriculum-shift-copy small {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.tax-shift-map {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) auto minmax(180px, 1fr);
+  align-items: center;
+  gap: 15px;
+}
+
+.tax-shift-node {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 9px 13px;
+  border: 1px solid var(--line);
+  background: rgba(245, 241, 232, 0.7);
+  transform-origin: center;
+}
+
+.tax-shift-node.is-active {
+  border-color: var(--purple);
+  background: var(--purple);
+  color: #fff9ea;
+  box-shadow: 5px 5px 0 rgba(198, 161, 91, 0.25);
+}
+
+.tax-shift-node small {
+  font-size: 10px;
+  opacity: 0.78;
+}
+
+.tax-shift-node strong {
+  flex: none;
+  font-size: 14px;
+}
+
+.tax-shift-arrow {
+  display: grid;
+  place-items: center;
+  color: var(--gold);
 }
 
 .programme-facts span {
@@ -682,6 +797,24 @@ a:focus-visible {
   color: var(--gold);
   font-family: "Bebas Neue", sans-serif;
   font-size: 14px;
+}
+
+.course-list li.is-shifted {
+  margin-top: 5px;
+  padding: 8px 9px;
+  border: 1px solid var(--gold);
+  background: rgba(198, 161, 91, 0.14);
+  color: var(--purple-dark);
+  font-weight: 700;
+}
+
+.course-list li em {
+  margin-left: auto;
+  color: var(--red);
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 10px;
+  font-style: normal;
+  letter-spacing: 0.08em;
 }
 
 .programme-foot {
@@ -1253,8 +1386,47 @@ a:focus-visible {
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .curriculum-control {
+    width: 100%;
+    margin-top: 32px;
+  }
+
+  .curriculum-control .programme-facts {
+    margin-top: 10px;
+  }
+
+  .curriculum-shift {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-top: 24px;
+    padding: 18px;
+  }
+
+  .curriculum-shift-copy {
+    grid-template-columns: 1fr;
+  }
+
+  .curriculum-shift-copy > span {
+    grid-column: auto;
+  }
+
+  .tax-shift-map {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .tax-shift-node {
+    min-height: 72px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 3px;
+  }
+
   .programme-columns {
     grid-template-columns: 1fr;
+    margin-top: 24px;
   }
 
   .programme-column {
@@ -1359,6 +1531,11 @@ a:focus-visible {
     gap: 18px 4vw;
   }
 
+  .programme .section-grid {
+    padding-top: 20px;
+    padding-bottom: 18px;
+  }
+
   .programme-heading .lead,
   .course-plan-heading .lead {
     display: none;
@@ -1367,6 +1544,20 @@ a:focus-visible {
   .programme-facts span {
     min-height: 50px;
     padding: 8px 14px;
+  }
+
+  .curriculum-switch {
+    margin-bottom: 6px;
+  }
+
+  .curriculum-switch button {
+    min-height: 32px;
+  }
+
+  .curriculum-shift {
+    min-height: 58px;
+    padding-top: 8px;
+    padding-bottom: 8px;
   }
 
   .course-list li {

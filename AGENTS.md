@@ -14,5 +14,6 @@ When implementing from a selected generated mock, treat that image as the source
 - The five full-screen chapters are opening, about, official programme courses (B1), the user's personal course map (B2), and experience; the deployed version also includes a same-origin backend endpoint for dynamic orientation advice.
 - Keep B1 as three list columns: shared required courses, AA electives, and PA electives. Keep B2 as a dedicated editable 24-month personal course-plan page rather than combining it with the official programme page.
 - B2 covers the four formal semesters only (2025, 2026, 2026, 2027); omit the summer pre-course because the orientation audience has already enrolled.
+- B1 must support an animated 2025-to-2026 curriculum transition. The 2026 curriculum uses 6 main courses plus 6 electives, and moves Chinese Tax Law from the required-course list into the PA elective list; retain manual year switching after the automatic transition.
 
 Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts/prepare-sites-build.mjs`, and `tests/sites-worker.test.mjs` intact so the same local prototype can be handed to Sites. Before a Sites handoff, run `npm run build` and `npm run test:sites`; the build must leave `dist/client/index.html`, `dist/server/index.js`, and `dist/.openai/hosting.json`.
