@@ -7,7 +7,6 @@ import {
   BookOpenText,
   Briefcase,
   ChartLineUp,
-  CheckCircle,
   Code,
   Compass,
   Database,
@@ -17,9 +16,7 @@ import {
   ListChecks,
   Pause,
   Play,
-  Shuffle,
   Sparkle,
-  X,
 } from "@phosphor-icons/react";
 
 const assetUrl = (path) => `${import.meta.env.BASE_URL}${path.replace(/^\/+/, "")}`;
@@ -343,47 +340,6 @@ function Header({ activeIndex }) {
   );
 }
 
-function AdvicePanel({ open, loading, advice, onClose, onRefresh }) {
-  return (
-    <AnimatePresence>
-      {open ? (
-        <motion.div
-          className="advice-backdrop"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onMouseDown={(event) => {
-            if (event.currentTarget === event.target) onClose();
-          }}
-        >
-          <motion.aside
-            className="advice-panel"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="advice-title"
-            initial={{ y: 36, opacity: 0, rotate: -1 }}
-            animate={{ y: 0, opacity: 1, rotate: 0 }}
-            exit={{ y: 24, opacity: 0 }}
-          >
-            <button className="icon-button" type="button" onClick={onClose} aria-label="关闭建议">
-              <X size={22} weight="bold" />
-            </button>
-            <p className="eyebrow">FIELD NOTE · SERVER RESPONSE</p>
-            <h2 id="advice-title">给新生的一条坐标</h2>
-            <div className="advice-copy" aria-live="polite">
-              {loading ? <span className="loading-line">正在从路线册里抽取…</span> : advice}
-            </div>
-            <button className="text-action" type="button" onClick={onRefresh} disabled={loading}>
-              <Shuffle size={19} weight="bold" />
-              再抽一条
-            </button>
-          </motion.aside>
-        </motion.div>
-      ) : null}
-    </AnimatePresence>
-  );
-}
-
 function ChapterRail({ activeIndex }) {
   return (
     <nav className="chapter-rail" aria-label="章节导航">
@@ -419,7 +375,7 @@ function Reveal({ children, className = "", delay = 0, y = 24 }) {
   );
 }
 
-function Hero({ onAdvice }) {
+function Hero() {
   const reduceMotion = useReducedMotion();
   return (
     <section className="chapter hero" id="intro" data-chapter="0">
@@ -468,10 +424,6 @@ function Hero({ onAdvice }) {
             <button className="primary-button" type="button" onClick={() => scrollToChapter("about")}>
               <Compass size={20} weight="fill" />
               开始探索
-            </button>
-            <button className="secondary-button" type="button" onClick={onAdvice}>
-              <Shuffle size={20} weight="bold" />
-              随机抽一条建议
             </button>
           </motion.div>
         </div>
@@ -1058,7 +1010,7 @@ function ExperienceReel() {
   );
 }
 
-function Experience({ onAdvice }) {
+function Experience() {
   return (
     <section className="chapter experience" id="experience" data-chapter="4">
       <div className="section-grid">
@@ -1098,10 +1050,6 @@ function Experience({ onAdvice }) {
             “项目给的是工具，真正的成长来自你如何连接课程、实习与同伴。”
           </blockquote>
           <div className="closing-actions">
-            <button className="primary-button" type="button" onClick={onAdvice}>
-              <Shuffle size={20} weight="bold" />
-              抽一条入学建议
-            </button>
             <button className="text-action" type="button" onClick={() => scrollToChapter("intro")}>
               回到开场 <ArrowRight size={18} />
             </button>
@@ -1110,7 +1058,7 @@ function Experience({ onAdvice }) {
 
         <footer className="site-footer">
           <span>© 2026 刘璨玮 · 会计分析 Orientation 分享</span>
-          <span className="backend-status"><CheckCircle size={16} weight="fill" /> 动态建议由后端服务生成</span>
+          <span>Personal field notes · 持续更新</span>
           <span>Designed for new beginnings.</span>
         </footer>
       </div>
@@ -1123,9 +1071,6 @@ export function App() {
     window.location.hash === "#course-guide" ? "course-guide" : "main"
   ));
   const [activeIndex, setActiveIndex] = useState(0);
-  const [adviceOpen, setAdviceOpen] = useState(false);
-  const [advice, setAdvice] = useState("");
-  const [adviceLoading, setAdviceLoading] = useState(false);
   const activeRef = useRef(activeIndex);
 
   useEffect(() => {
@@ -1158,7 +1103,7 @@ export function App() {
 
   useEffect(() => {
     const onKeyDown = (event) => {
-      if (currentView !== "main" || adviceOpen || event.metaKey || event.ctrlKey || event.altKey) return;
+      if (currentView !== "main" || event.metaKey || event.ctrlKey || event.altKey) return;
       if (["INPUT", "TEXTAREA", "SELECT", "BUTTON"].includes(document.activeElement?.tagName)) return;
       if (!["ArrowDown", "ArrowUp", "PageDown", "PageUp"].includes(event.key)) return;
       event.preventDefault();
@@ -1168,22 +1113,7 @@ export function App() {
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [adviceOpen, currentView]);
-
-  const loadAdvice = async () => {
-    setAdviceLoading(true);
-    setAdviceOpen(true);
-    try {
-      const response = await fetch(`/api/advice?seed=${Date.now()}`);
-      if (!response.ok) throw new Error("advice unavailable");
-      const data = await response.json();
-      setAdvice(data.advice);
-    } catch {
-      setAdvice("先选一件你愿意持续做一学期的小事。稳定的积累，比一次性的满格状态更有力量。");
-    } finally {
-      setAdviceLoading(false);
-    }
-  };
+  }, [currentView]);
 
   const openCourseGuide = () => {
     window.location.hash = "course-guide";
@@ -1205,20 +1135,13 @@ export function App() {
     <div className="app-shell" data-active-chapter={contextValue.activeIndex}>
       <Header activeIndex={activeIndex} />
       <main>
-        <Hero onAdvice={loadAdvice} />
+        <Hero />
         <About />
         <Programme />
         <PersonalCoursePlan onOpenCourseGuide={openCourseGuide} />
-        <Experience onAdvice={loadAdvice} />
+        <Experience />
       </main>
       <ChapterRail activeIndex={activeIndex} />
-      <AdvicePanel
-        open={adviceOpen}
-        loading={adviceLoading}
-        advice={advice}
-        onClose={() => setAdviceOpen(false)}
-        onRefresh={loadAdvice}
-      />
     </div>
   );
 }
