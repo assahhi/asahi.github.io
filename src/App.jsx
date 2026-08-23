@@ -653,7 +653,7 @@ function PersonalCoursePlan() {
       <div className="section-grid">
         <Reveal className="section-heading course-plan-heading">
           <p className="eyebrow">B2 / 我的课程安排 · PERSONAL COURSE MAP</p>
-          <h2>Course Schedule</h2>
+          <h2>My Schedule</h2>
 
         </Reveal>
 
