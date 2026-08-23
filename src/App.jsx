@@ -2,13 +2,19 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   ArrowDown,
+  ArrowLeft,
   ArrowRight,
+  BookOpenText,
   Briefcase,
   ChartLineUp,
   CheckCircle,
+  Code,
   Compass,
   Database,
+  Gauge,
   GraduationCap,
+  LinkSimple,
+  ListChecks,
   Shuffle,
   Sparkle,
   X,
@@ -96,6 +102,93 @@ const personalCoursePlan = [
     period: "1 月 — 5 月",
     courses: ["Business Valuation and Financial Statement Analysis",],
     note: "边实习边上课，完成最后一门选修课，毕业",
+  },
+];
+
+const termOneRequiredCourses = [
+  {
+    term: "TERM 1 · SEM 1",
+    period: "2025.09 — 2025.12",
+    courses: ["企业会计", "管理会计", "经济法", "税法", "思政 · 2 门"],
+    note: "第一学期以基础必修为主，先建立会计、税法与商事规则的共同语言。",
+  },
+  {
+    term: "TERM 1 · SEM 2",
+    period: "2026.01 — 2026.05",
+    courses: ["企业会计进阶", "审计与认证业务", "财务管理"],
+    note: "第二学期完成进阶必修，同时把更多精力转向数据、模型与文本分析选修。",
+  },
+];
+
+const electiveCourseNotes = [
+  {
+    code: "ACT6201",
+    name: "法务会计与预测分析",
+    term: "TERM 1 · SEM 1",
+    difficulty: 3,
+    summary:
+      "课堂氛围很轻松，以经典文献为线索学习 Stata 代码，并配有入门教程。课程希望你能用财务数据、统计模型和数字特征，识别、预测与防范财务舞弊、会计操纵及企业破产风险。",
+    topics: ["盈余管理动机", "舞弊检测模型", "财务数据的数字特征", "破产预测模型", "市场反应机制"],
+    suitable: "有过文献研读经验、想走学术，或喜欢钻研代码逻辑的同学。",
+    assessment: [
+      { label: "Project 1", weight: "15%", value: 15, note: "近 10 年投资者心理理论验证" },
+      { label: "Project 2", weight: "15%", value: 15, note: "中国背景下的公司破产预测分析" },
+      { label: "Project 3", weight: "15%", value: 15, note: "F-Score 的应用及失效分析" },
+      { label: "Mid Exam", weight: "20%", value: 20, note: "单选、简答与论述，整体有一定难度" },
+      { label: "Final Exam", weight: "35%", value: 35, note: "机考；考前有 Review 课，建议参加" },
+      { label: "Extra Bonus", weight: "+5%", value: 5, note: "小组汇报额外计入总评，但总评不超过 100", bonus: true },
+    ],
+  },
+  {
+    code: "ACT6241",
+    name: "数据挖掘和商业分析",
+    term: "TERM 1 · SEM 2",
+    difficulty: 4,
+    summary:
+      "从数据清理、特征工程和完整 pipeline 出发，系统介绍决策树、逻辑回归、SVM、KNN、聚类、Bayes 与规则挖掘，并讨论过拟合处理和模型效果评估。听说今年还会增加 AI Agent 应用案例。",
+    topics: ["机器学习模型", "特征工程", "过拟合处理", "模型评估", "数据挖掘 Pipeline"],
+    suitable: "想做商业分析或数据分析，希望理解模型底层逻辑与适用场景的同学。",
+    assessment: [
+      { label: "In-class Quiz", weight: "20%", value: 20, note: "6% + 6% + 8%；开卷，以选择与计算为主" },
+      { label: "Homework", weight: "10%", value: 10, note: "2 × 5%；小有难度，考察对课堂模型的理解" },
+      { label: "Coding", weight: "40%", value: 40, note: "4 × 10%；充分理解教授给出的 sample coding" },
+      { label: "Group Project", weight: "20%", value: 20, note: "给定主题与范围，完整走完数据挖掘流程" },
+      { label: "Personal Project", weight: "10%", value: 10, note: "用户银行信用分预测；评分标准相对开放" },
+    ],
+  },
+  {
+    code: "ACT6242",
+    name: "会计数据策略与可视化",
+    term: "TERM 1 · SEM 1",
+    difficulty: 2,
+    summary:
+      "课程重点是 SQL 基础与 Tableau 可视化看板搭建。对于进入数据分析岗位很实用，适合作为入门起点；但课程深度有限，需要课后继续刷题并积累函数使用经验。",
+    topics: ["SQL 基础", "数据查询", "Tableau", "可视化看板", "业务表达"],
+    suitable: "希望补齐数据分析必备 SQL 能力、从零开始搭建可视化作品的同学。",
+    resource: { label: "SQLZoo · SQL 练习", url: "https://sqlzoo.net/wiki/SQL_Tutorial" },
+    assessment: [
+      { label: "Participation", weight: "15%", value: 15, note: "每节课定位签到，并计入课堂互动" },
+      { label: "Assignment", weight: "20%", value: 20, note: "通过 Blackboard 完成，主要考察 SQL" },
+      { label: "Group Project", weight: "45%", value: 45, note: "重点考验看板审美、信息层次和可视化能力" },
+      { label: "Midterm Exam", weight: "20%", value: 20, note: "基础概念、代码逻辑勘误与问题拆解写代码" },
+    ],
+  },
+  {
+    code: "ACT6243",
+    name: "金融市场的文本分析",
+    term: "TERM 1 · SEM 2",
+    difficulty: 5,
+    summary:
+      "学习链路从 Python 基础与 pandas 开始，逐步进入可视化、词云、PDF 文本提取、分词、爬虫、文本复杂度与相似度、主题模型，最后延伸到 LLM 简介。内容密度高，也最能拉升 Coding 能力。",
+    topics: ["Python / pandas", "PDF Miner", "爬虫与分词", "文本相似度", "主题模型与 LLM"],
+    suitable: "希望走科研方向，或愿意用高强度项目明显提升 Coding 能力的同学。",
+    assessment: [
+      { label: "Assignments", weight: "40%", value: 40, note: "共 5 次，有难度，但 TA 给分比较友好" },
+      { label: "Participation", weight: "10%", value: 10, note: "老师每节课提问；满分次数不公开，需要主动发言" },
+      { label: "Proposal", weight: "5%", value: 5, note: "不必过度具体，但要讲清项目想表达的“故事”" },
+      { label: "Presentation", weight: "25%", value: 25, note: "考验 PPT 基本功，以及项目标新立异的亮点" },
+      { label: "Project Report", weight: "20%", value: 20, note: "重视排版与语言，并要求披露 AI 使用情况" },
+    ],
   },
 ];
 
@@ -214,9 +307,9 @@ function scrollToChapter(id) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-function Brand() {
+function Brand({ onClick = () => scrollToChapter("intro"), label = "返回开场" }) {
   return (
-    <button className="brand" type="button" onClick={() => scrollToChapter("intro")} aria-label="返回开场">
+    <button className="brand" type="button" onClick={onClick} aria-label={label}>
       <img src={assetUrl("assets/cuhksz-crest.png")} alt="香港中文大学（深圳）校徽" />
       <span>
         <strong>香港中文大学（深圳）</strong>
@@ -647,7 +740,7 @@ function Programme() {
   );
 }
 
-function PersonalCoursePlan() {
+function PersonalCoursePlan({ onOpenCourseGuide }) {
   return (
     <section className="chapter course-plan" id="course-plan" data-chapter="3">
       <div className="section-grid">
@@ -657,10 +750,13 @@ function PersonalCoursePlan() {
 
         </Reveal>
 
-        <Reveal className="course-plan-note" delay={0.08}>
-          <span>EDITABLE PAGE</span>
-          <strong>个人内容预留区</strong>
-          <small>当前为占位内容，可随时替换</small>
+        <Reveal className="course-plan-entry-wrap" delay={0.08}>
+          <button className="course-plan-note" type="button" onClick={onOpenCourseGuide}>
+            <span>TERM 1 · COURSE NOTES</span>
+            <strong>查看课程理解</strong>
+            <small>4 门选修 · 内容与考核拆解</small>
+            <ArrowRight size={20} weight="bold" aria-hidden="true" />
+          </button>
         </Reveal>
 
         <div className="personal-term-grid">
@@ -689,6 +785,219 @@ function PersonalCoursePlan() {
         </Reveal>
       </div>
     </section>
+  );
+}
+
+function DifficultyMeter({ level }) {
+  return (
+    <div className="difficulty-meter" aria-label={`课程难度 ${level}/5`}>
+      <span>难度</span>
+      <div aria-hidden="true">
+        {Array.from({ length: 5 }, (_, index) => (
+          <i className={index < level ? "is-filled" : ""} key={index} />
+        ))}
+      </div>
+      <strong>{level}/5</strong>
+    </div>
+  );
+}
+
+function AssessmentBreakdown({ items }) {
+  const scoredItems = items.filter((item) => !item.bonus);
+
+  return (
+    <div className="assessment-block">
+      <div className="assessment-title">
+        <span><ListChecks size={20} weight="duotone" /> ASSESSMENT MAP</span>
+        <small>考核结构</small>
+      </div>
+      <div className="assessment-bar" aria-hidden="true">
+        {scoredItems.map((item) => (
+          <i key={item.label} style={{ width: `${item.value}%` }} />
+        ))}
+      </div>
+      <div className="assessment-list">
+        {items.map((item) => (
+          <div className={`assessment-row${item.bonus ? " is-bonus" : ""}`} key={item.label}>
+            <strong>{item.label}</strong>
+            <span>{item.weight}</span>
+            <p>{item.note}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ElectiveCourseCard({ course, index }) {
+  return (
+    <motion.article
+      className="course-note-card"
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.18 }}
+      transition={{ duration: 0.62, delay: index * 0.04, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <div className="course-note-summary">
+        <div className="course-note-meta">
+          <span>{course.code}</span>
+          <small>{course.term}</small>
+        </div>
+        <h2>{course.name}</h2>
+        <DifficultyMeter level={course.difficulty} />
+        <p className="course-note-copy">{course.summary}</p>
+        <div className="topic-tags" aria-label="课程重点">
+          {course.topics.map((topic) => <span key={topic}>{topic}</span>)}
+        </div>
+        <div className="suitable-note">
+          <Gauge size={21} weight="duotone" aria-hidden="true" />
+          <p><strong>适合谁</strong>{course.suitable}</p>
+        </div>
+        {course.resource ? (
+          <a className="course-resource-link" href={course.resource.url} target="_blank" rel="noreferrer">
+            <Code size={19} weight="duotone" />
+            {course.resource.label}
+            <ArrowRight size={17} />
+          </a>
+        ) : null}
+      </div>
+      <AssessmentBreakdown items={course.assessment} />
+    </motion.article>
+  );
+}
+
+function RequiredCourseOverview() {
+  return (
+    <motion.div
+      className="required-course-view"
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -12 }}
+      transition={{ duration: 0.4 }}
+    >
+      <div className="required-intro-card">
+        <BookOpenText size={32} weight="duotone" aria-hidden="true" />
+        <div>
+          <span>TERM 1 · REQUIRED ROUTE</span>
+          <h2>7 门专业必修，分两个学期完成</h2>
+          <p>这里先呈现我的修读节奏；当前个人课程理解重点放在四门选修课，必修课评价会随学习继续补充。</p>
+        </div>
+      </div>
+      <div className="required-term-grid">
+        {termOneRequiredCourses.map((term, index) => (
+          <article key={term.term}>
+            <div className="required-term-head">
+              <span>0{index + 1}</span>
+              <div>
+                <strong>{term.term}</strong>
+                <small>{term.period}</small>
+              </div>
+            </div>
+            <ul>
+              {term.courses.map((course) => <li key={course}>{course}</li>)}
+            </ul>
+            <p>{term.note}</p>
+          </article>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+function CourseGuide({ onBack }) {
+  const [courseType, setCourseType] = useState("elective");
+
+  useEffect(() => {
+    const previousTitle = document.title;
+    document.title = "Term 1 课程理解 · Orientation Field Notes";
+    document.documentElement.classList.add("course-guide-mode");
+    window.scrollTo({ top: 0, behavior: "instant" });
+    return () => {
+      document.title = previousTitle;
+      document.documentElement.classList.remove("course-guide-mode");
+    };
+  }, []);
+
+  return (
+    <div className="course-guide-page">
+      <header className="masthead course-guide-masthead">
+        <Brand onClick={onBack} label="返回课程安排" />
+        <button className="guide-back-button" type="button" onClick={onBack}>
+          <ArrowLeft size={19} weight="bold" />
+          返回课程地图
+        </button>
+      </header>
+
+      <main className="course-guide-main">
+        <section className="course-guide-hero">
+          <div>
+            <p className="eyebrow">B2.1 / TERM 1 · PERSONAL COURSE NOTES</p>
+            <h1>我的课程理解</h1>
+            <p className="course-guide-lead">
+              不只列课程名，也把学习内容、适合人群与真实考核结构放在同一张路线图里。
+            </p>
+          </div>
+          <div className="course-guide-stamp">
+            <span>4 ELECTIVES</span>
+            <strong>2 SEMESTERS</strong>
+            <small>2025.09 — 2026.05</small>
+          </div>
+        </section>
+
+        <div className="course-type-toolbar">
+          <div className="course-type-switch" role="tablist" aria-label="切换必修与选修课程">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={courseType === "required"}
+              className={courseType === "required" ? "is-active" : ""}
+              onClick={() => setCourseType("required")}
+            >
+              必修课程 <span>7</span>
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={courseType === "elective"}
+              className={courseType === "elective" ? "is-active" : ""}
+              onClick={() => setCourseType("elective")}
+            >
+              选修课程 <span>4</span>
+            </button>
+          </div>
+          <a href="https://www.runoob.com" target="_blank" rel="noreferrer">
+            <LinkSimple size={18} weight="bold" />
+            综合学习入口 · 菜鸟教程
+          </a>
+        </div>
+
+        <AnimatePresence mode="wait" initial={false}>
+          {courseType === "elective" ? (
+            <motion.section
+              className="course-notes-grid"
+              key="elective"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              aria-label="选修课个人理解"
+            >
+              {electiveCourseNotes.map((course, index) => (
+                <ElectiveCourseCard course={course} index={index} key={course.code} />
+              ))}
+            </motion.section>
+          ) : (
+            <RequiredCourseOverview key="required" />
+          )}
+        </AnimatePresence>
+
+        <footer className="course-guide-footer">
+          <button className="secondary-button" type="button" onClick={onBack}>
+            <ArrowLeft size={18} weight="bold" /> 返回我的课程安排
+          </button>
+          <span>PERSONAL FIELD NOTES · 内容基于个人修读体验</span>
+        </footer>
+      </main>
+    </div>
   );
 }
 
@@ -747,6 +1056,9 @@ function Experience({ onAdvice }) {
 }
 
 export function App() {
+  const [currentView, setCurrentView] = useState(() => (
+    window.location.hash === "#course-guide" ? "course-guide" : "main"
+  ));
   const [activeIndex, setActiveIndex] = useState(0);
   const [adviceOpen, setAdviceOpen] = useState(false);
   const [advice, setAdvice] = useState("");
@@ -754,10 +1066,19 @@ export function App() {
   const activeRef = useRef(activeIndex);
 
   useEffect(() => {
+    const syncViewWithHash = () => {
+      setCurrentView(window.location.hash === "#course-guide" ? "course-guide" : "main");
+    };
+    window.addEventListener("hashchange", syncViewWithHash);
+    return () => window.removeEventListener("hashchange", syncViewWithHash);
+  }, []);
+
+  useEffect(() => {
     activeRef.current = activeIndex;
   }, [activeIndex]);
 
   useEffect(() => {
+    if (currentView !== "main") return undefined;
     const nodes = [...document.querySelectorAll("[data-chapter]")];
     const observer = new IntersectionObserver(
       (entries) => {
@@ -770,11 +1091,11 @@ export function App() {
     );
     nodes.forEach((node) => observer.observe(node));
     return () => observer.disconnect();
-  }, []);
+  }, [currentView]);
 
   useEffect(() => {
     const onKeyDown = (event) => {
-      if (adviceOpen || event.metaKey || event.ctrlKey || event.altKey) return;
+      if (currentView !== "main" || adviceOpen || event.metaKey || event.ctrlKey || event.altKey) return;
       if (["INPUT", "TEXTAREA", "SELECT", "BUTTON"].includes(document.activeElement?.tagName)) return;
       if (!["ArrowDown", "ArrowUp", "PageDown", "PageUp"].includes(event.key)) return;
       event.preventDefault();
@@ -784,7 +1105,7 @@ export function App() {
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [adviceOpen]);
+  }, [adviceOpen, currentView]);
 
   const loadAdvice = async () => {
     setAdviceLoading(true);
@@ -801,7 +1122,21 @@ export function App() {
     }
   };
 
+  const openCourseGuide = () => {
+    window.location.hash = "course-guide";
+  };
+
+  const closeCourseGuide = () => {
+    window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
+    setCurrentView("main");
+    window.setTimeout(() => scrollToChapter("course-plan"), 0);
+  };
+
   const contextValue = useMemo(() => ({ activeIndex }), [activeIndex]);
+
+  if (currentView === "course-guide") {
+    return <CourseGuide onBack={closeCourseGuide} />;
+  }
 
   return (
     <div className="app-shell" data-active-chapter={contextValue.activeIndex}>
@@ -810,7 +1145,7 @@ export function App() {
         <Hero onAdvice={loadAdvice} />
         <About />
         <Programme />
-        <PersonalCoursePlan />
+        <PersonalCoursePlan onOpenCourseGuide={openCourseGuide} />
         <Experience onAdvice={loadAdvice} />
       </main>
       <ChapterRail activeIndex={activeIndex} />
