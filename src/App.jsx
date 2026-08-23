@@ -15,6 +15,8 @@ import {
   GraduationCap,
   LinkSimple,
   ListChecks,
+  Pause,
+  Play,
   Shuffle,
   Sparkle,
   X,
@@ -29,6 +31,14 @@ const chapters = [
   { id: "course-plan", short: "B2", title: "My Course Map" },
   { id: "experience", short: "C", title: "Comprehensive Experience" },
 ];
+
+const experiencePhotos = Array.from({ length: 17 }, (_, index) => {
+  const number = String(index + 1).padStart(2, "0");
+  return {
+    number,
+    src: assetUrl(`assets/experience/${number}.jpg`),
+  };
+});
 
 const experienceRoute = [
   {
@@ -1001,17 +1011,67 @@ function CourseGuide({ onBack }) {
   );
 }
 
+function ExperienceReel() {
+  const reduceMotion = useReducedMotion();
+  const [paused, setPaused] = useState(false);
+  const isPaused = paused || reduceMotion;
+  const reelPhotos = [...experiencePhotos, ...experiencePhotos];
+
+  return (
+    <Reveal className="project-reel" delay={0.1} y={14}>
+      <div className="project-reel-heading">
+        <div>
+          <span>PROJECT MOMENTS</span>
+          <strong>项目剪影</strong>
+        </div>
+        <button
+          type="button"
+          aria-label={isPaused ? "播放项目剪影" : "暂停项目剪影"}
+          aria-pressed={isPaused}
+          disabled={reduceMotion}
+          onClick={() => setPaused((value) => !value)}
+        >
+          {isPaused ? <Play size={15} weight="fill" /> : <Pause size={15} weight="fill" />}
+          {isPaused ? "播放" : "暂停"}
+        </button>
+      </div>
+      <div className="project-reel-window" aria-label="按文件名顺序自动滚动的项目照片">
+        <div className={`project-reel-track${isPaused ? " is-paused" : ""}`}>
+          {reelPhotos.map((photo, index) => {
+            const duplicate = index >= experiencePhotos.length;
+            return (
+              <figure aria-hidden={duplicate || undefined} key={`${photo.number}-${duplicate ? "copy" : "original"}`}>
+                <img
+                  src={photo.src}
+                  alt={duplicate ? "" : `项目剪影 ${photo.number}`}
+                  loading="lazy"
+                  decoding="async"
+                />
+                <figcaption>{photo.number}</figcaption>
+              </figure>
+            );
+          })}
+        </div>
+      </div>
+      <small>01—17 · 按文件名顺序循环</small>
+    </Reveal>
+  );
+}
+
 function Experience({ onAdvice }) {
   return (
     <section className="chapter experience" id="experience" data-chapter="4">
       <div className="section-grid">
-        <Reveal className="section-heading experience-heading">
-          <p className="eyebrow">C / 综合体验 · FIELD NOTES</p>
-          <h2>我会提前告诉<br />新生的三件事</h2>
-          <p className="lead">
-            以下是我的个人体验，不是唯一答案。希望它能帮你更早找到自己的节奏。
-          </p>
-        </Reveal>
+        <div className="experience-intro">
+          <Reveal className="section-heading experience-heading">
+            <p className="eyebrow">C / 建议 · FIELD NOTES</p>
+            <h2>建议</h2>
+            <p className="lead">
+              以下是我的个人体验，不是唯一答案。希望它能帮你更早找到自己的节奏。
+            </p>
+          </Reveal>
+          <ExperienceReel />
+        </div>
 
         <div className="takeaway-list">
           {takeaways.map((item, index) => {
