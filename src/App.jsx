@@ -10,6 +10,7 @@ import {
   Code,
   Compass,
   Database,
+  EnvelopeSimple,
   Gauge,
   GraduationCap,
   LinkSimple,
@@ -17,6 +18,7 @@ import {
   Pause,
   Play,
   Sparkle,
+  WechatLogo,
 } from "@phosphor-icons/react";
 
 const assetUrl = (path) => `${import.meta.env.BASE_URL}${path.replace(/^\/+/, "")}`;
@@ -27,6 +29,7 @@ const chapters = [
   { id: "programme", short: "B1", title: "Programme Courses" },
   { id: "course-plan", short: "B2", title: "My Course Map" },
   { id: "experience", short: "C", title: "Comprehensive Experience" },
+  { id: "contact", short: "D", title: "Contact" },
 ];
 
 const experiencePhotos = Array.from({ length: 17 }, (_, index) => {
@@ -293,19 +296,19 @@ const takeaways = [
   {
     icon: Database,
     index: "01",
-    title: "先搭自己的学习系统",
+    title: "搭建学习体系",
     copy: "课程密度不低。比起追求工具数量，更重要的是固定一条主线：问题—数据—方法—表达。每门课都留下一份可复用作品。",
   },
   {
     icon: Briefcase,
     index: "02",
-    title: "把 24 个月当成职业窗口",
+    title: "把握实习机会",
     copy: "深圳的产业与实习机会很近，但机会不会自动发生。尽早确定目标岗位，用课程项目补齐作品集，再用实习校准方向。",
   },
   {
     icon: ChartLineUp,
     index: "03",
-    title: "主动经营同伴与节奏",
+    title: "找到志同道合的伙伴",
     copy: "同学的背景会非常多元。多问、多分享、早点组队；给生活留一点缓冲，长期稳定比短期满负荷更容易走远。",
   },
 ];
@@ -469,7 +472,7 @@ function Hero() {
         {chapters.slice(1).map((chapter, index) => (
           <button key={chapter.id} type="button" onClick={() => scrollToChapter(chapter.id)}>
             <span>{chapter.short} / {chapter.title}</span>
-            <small>{["22.5431°N", "113.957°E", "22.69°N", "114.06°E"][index]}</small>
+            <small>{["22.5431°N", "113.957°E", "22.69°N", "114.06°E", "KEEP IN TOUCH"][index]}</small>
           </button>
         ))}
         <button className="scroll-cue" type="button" onClick={() => scrollToChapter("about")}>
@@ -1016,14 +1019,14 @@ function Experience() {
       <div className="section-grid">
         <div className="experience-intro">
           <Reveal className="section-heading experience-heading">
-            <p className="eyebrow">C / 建议 · FIELD NOTES</p>
-            <h2>建议</h2>
-            <p className="lead">
-              焦虑是因为你有解决问题的能力。
-            </p>
-            <p className="lead">
-              祝各位在秋天开启新的故事。
-            </p>
+            <div className="experience-title-block">
+              <p className="eyebrow">C / 综合体验 · FIELD NOTES</p>
+              <h2>综合体验</h2>
+            </div>
+            <div className="experience-advice-lines">
+              <p>焦虑是因为你有解决问题的能力。</p>
+              <p>祝各位在秋天开启新的故事。</p>
+            </div>
           </Reveal>
           <ExperienceReel />
         </div>
@@ -1056,7 +1059,69 @@ function Experience() {
           </div>
         </Reveal>
 
-        <footer className="site-footer">
+      </div>
+    </section>
+  );
+}
+
+function Contact() {
+  return (
+    <section className="chapter contact" id="contact" data-chapter="5">
+      <div className="section-grid">
+        <Reveal className="contact-heading">
+          <div>
+            <p className="eyebrow">D / 联系方式 · CONTACT FIELD NOTE</p>
+            <h2>联系方式</h2>
+          </div>
+          <div className="contact-stamp" aria-label="保持联系坐标章">
+            <span>FIELD NOTE · 04</span>
+            <strong>KEEP IN TOUCH</strong>
+            <small>深圳 · 22°32′N / 114°03′E</small>
+          </div>
+        </Reveal>
+
+        <Reveal className="contact-details" delay={0.08}>
+          <a className="contact-row" href="mailto:canweiliu@link.cuhk.edu.cn">
+            <span className="contact-label">
+              <EnvelopeSimple size={27} weight="duotone" aria-hidden="true" />
+              <small>EMAIL</small>
+            </span>
+            <strong>canweiliu@link.cuhk.edu.cn</strong>
+            <ArrowRight size={22} weight="bold" aria-hidden="true" />
+          </a>
+          <div className="contact-row">
+            <span className="contact-label">
+              <WechatLogo size={27} weight="duotone" aria-hidden="true" />
+              <small>WECHAT</small>
+            </span>
+            <strong>Asahhi_Liu</strong>
+            <span className="contact-row-note">扫码添加好友</span>
+          </div>
+        </Reveal>
+
+        <Reveal className="wechat-card" delay={0.12} y={16}>
+          <div className="wechat-card-meta">
+            <span>WECHAT CONTACT</span>
+            <strong>Asahi</strong>
+          </div>
+          <img
+            src={assetUrl("assets/wechat-qr.jpg")}
+            alt="Asahi 的微信联系二维码"
+            loading="lazy"
+            decoding="async"
+          />
+          <small>使用微信扫描二维码，添加我为好友</small>
+        </Reveal>
+
+        <Reveal className="contact-closing" delay={0.16}>
+          <Sparkle size={27} weight="fill" aria-hidden="true" />
+          <blockquote>新的故事会在秋风中慢慢开始</blockquote>
+          <button className="text-action" type="button" onClick={() => scrollToChapter("intro")}>
+            回到开场 <ArrowRight size={18} />
+          </button>
+        </Reveal>
+
+        <footer className="site-footer contact-footer">
           <span>© 2026 刘璨玮 · 会计分析 Orientation 分享</span>
           <span>Personal field notes · 持续更新</span>
           <span>Designed for new beginnings.</span>
@@ -1140,6 +1205,7 @@ export function App() {
         <Programme />
         <PersonalCoursePlan onOpenCourseGuide={openCourseGuide} />
         <Experience />
+        <Contact />
       </main>
       <ChapterRail activeIndex={activeIndex} />
     </div>
