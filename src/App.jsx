@@ -318,20 +318,52 @@ function scrollToChapter(id) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-function exportAsPdf() {
-  window.print();
+async function exportAsPdf() {
+  document.documentElement.classList.add("pdf-export-mode");
+
+  try {
+    await document.fonts?.ready;
+    await Promise.all(
+      [...document.images].map((image) => (
+        image.complete
+          ? image.decode?.().catch(() => undefined)
+          : new Promise((resolve) => {
+              image.addEventListener("load", resolve, { once: true });
+              image.addEventListener("error", resolve, { once: true });
+            })
+      )),
+    );
+    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    window.print();
+  } finally {
+    document.documentElement.classList.remove("pdf-export-mode");
+  }
 }
 
 function ExportPdfButton({ className = "" }) {
+  const [isPreparing, setIsPreparing] = useState(false);
+
+  const handleExport = async () => {
+    if (isPreparing) return;
+    setIsPreparing(true);
+    try {
+      await exportAsPdf();
+    } finally {
+      setIsPreparing(false);
+    }
+  };
+
   return (
     <button
       className={`export-pdf-button ${className}`.trim()}
       type="button"
-      onClick={exportAsPdf}
+      onClick={handleExport}
       aria-label="导出为 PDF"
+      aria-busy={isPreparing}
+      disabled={isPreparing}
     >
       <FilePdf size={19} weight="bold" aria-hidden="true" />
-      <span>导出 PDF</span>
+      <span>{isPreparing ? "正在准备…" : "导出 PDF"}</span>
     </button>
   );
 }
@@ -387,7 +419,7 @@ function Reveal({ children, className = "", delay = 0, y = 24 }) {
   const reduceMotion = useReducedMotion();
   return (
     <motion.div
-      className={className}
+      className={`reveal ${className}`.trim()}
       initial={reduceMotion ? false : { opacity: 0, y }}
       whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.35 }}
@@ -817,7 +849,7 @@ function AssessmentBreakdown({ items }) {
 function ElectiveCourseCard({ course, index }) {
   return (
     <motion.article
-      className="course-note-card"
+      className="course-note-card pdf-static"
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.18 }}

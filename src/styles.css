@@ -165,6 +165,11 @@ a:focus-visible {
   transform: translateY(-1px);
 }
 
+.export-pdf-button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
 .chapter-count {
   display: flex;
   align-items: baseline;
@@ -2720,82 +2725,6 @@ html.course-guide-mode {
   }
 }
 
-@media print {
-  @page {
-    size: 16in 9in;
-    margin: 0;
-  }
-
-  :root {
-    --masthead-h: 0px;
-    --page-x: 0.6in;
-  }
-
-  *,
-  *::before,
-  *::after {
-    animation: none !important;
-    transition: none !important;
-  }
-
-  html,
-  html.course-guide-mode,
-  body {
-    scroll-snap-type: none;
-    background: var(--paper);
-  }
-
-  body {
-    min-width: 0;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-
-  .masthead,
-  .chapter-rail,
-  .project-reel-control,
-  .course-plan-note,
-  .text-action,
-  .course-type-toolbar,
-  .course-guide-footer .secondary-button {
-    display: none !important;
-  }
-
-  .chapter {
-    width: 16in;
-    height: 9in;
-    min-height: 9in;
-    padding-top: 0;
-    break-after: page;
-    page-break-after: always;
-    overflow: hidden;
-  }
-
-  .chapter:last-of-type {
-    break-after: auto;
-    page-break-after: auto;
-  }
-
-  .hero-content,
-  .section-grid {
-    height: 9in;
-    min-height: 9in;
-  }
-
-  .course-guide-main {
-    width: 100%;
-    padding-top: 0.6in;
-  }
-
-  .course-note-card,
-  .required-intro-card,
-  .required-term-grid,
-  .course-guide-footer {
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-}
-
 @media (max-height: 720px) and (min-width: 821px) {
   :root {
     --masthead-h: 58px;
@@ -2971,5 +2900,449 @@ html.course-guide-mode {
   .project-reel-track {
     animation: none !important;
     transform: none !important;
+  }
+}
+
+/* PDF export is a fixed 16:9 deck, not a reflowed webpage. Keep this block last
+   so responsive viewport rules cannot override the print layout. */
+@media print {
+  @page {
+    size: 10.666667in 6in;
+    margin: 0;
+  }
+
+  :root {
+    --masthead-h: 0px !important;
+    --page-x: 0.6in !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  html,
+  html.course-guide-mode,
+  body {
+    width: 16in !important;
+    min-width: 16in !important;
+    height: auto !important;
+    scroll-behavior: auto !important;
+    scroll-snap-type: none !important;
+    background: var(--paper) !important;
+  }
+
+  body {
+    margin: 0 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  #root,
+  .app-shell {
+    width: 16in !important;
+    min-width: 16in !important;
+  }
+
+  .masthead,
+  .chapter-rail,
+  .project-reel-control,
+  .course-plan-note,
+  .text-action,
+  .course-type-toolbar,
+  .course-guide-footer .secondary-button {
+    display: none !important;
+  }
+
+  .chapter {
+    position: relative !important;
+    width: 16in !important;
+    height: 9in !important;
+    min-height: 9in !important;
+    max-height: 9in !important;
+    padding-top: 0 !important;
+    break-after: page;
+    page-break-after: always;
+    overflow: hidden !important;
+  }
+
+  .chapter:last-of-type {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  .hero-content,
+  .section-grid {
+    width: 100% !important;
+    min-height: 9in !important;
+    max-height: 9in !important;
+  }
+
+  .hero-content {
+    height: 9in !important;
+    min-height: 0 !important;
+    grid-template-columns: minmax(0, 1.16fr) minmax(360px, 0.84fr) !important;
+    align-content: normal !important;
+    align-items: center !important;
+    padding-top: 0.38in !important;
+    padding-right: var(--page-x) !important;
+    padding-bottom: 1.15in !important;
+    padding-left: var(--page-x) !important;
+  }
+
+  .section-grid {
+    display: grid !important;
+    height: 9in !important;
+    padding-top: 0.38in !important;
+    padding-bottom: 0.34in !important;
+  }
+
+  .hero-visual {
+    min-height: 480px !important;
+    margin-top: 0 !important;
+  }
+
+  .portrait-frame {
+    width: min(33vw, 480px) !important;
+    height: min(68vh, 650px) !important;
+    right: 6% !important;
+    bottom: 1% !important;
+  }
+
+  .portrait-frame img {
+    object-fit: contain !important;
+    object-position: 50% 50% !important;
+    transform: scale(1.02) !important;
+  }
+
+  .route-overlay {
+    width: min(29vw, 405px) !important;
+    right: -8% !important;
+  }
+
+  .hero-actions {
+    flex-direction: row !important;
+    align-items: center !important;
+  }
+
+  .hero-chapters {
+    height: 1.05in !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    padding: 0 var(--page-x) !important;
+  }
+
+  .hero-chapters > button {
+    padding: 0 24px !important;
+  }
+
+  .hero-chapters > button:first-child {
+    padding-left: 0 !important;
+  }
+
+  .hero-chapters .scroll-cue {
+    display: none !important;
+  }
+
+  .hero-chapters span {
+    font-size: 12px !important;
+  }
+
+  .about .section-grid {
+    grid-template-columns: minmax(300px, 0.9fr) minmax(560px, 1.1fr) !important;
+    grid-template-rows: 1fr auto !important;
+    column-gap: 7vw !important;
+    row-gap: 24px !important;
+  }
+
+  .route-list,
+  .programme-facts,
+  .programme-columns,
+  .personal-term-grid,
+  .takeaway-list {
+    margin-top: 0 !important;
+  }
+
+  .data-strip {
+    grid-template-columns: repeat(3, 1fr) !important;
+    margin-top: 0 !important;
+  }
+
+  .data-strip > div {
+    justify-content: center !important;
+    border-right: 1px solid var(--purple) !important;
+    border-bottom: 0 !important;
+  }
+
+  .data-strip > div:last-child {
+    border-right: 0 !important;
+  }
+
+  .programme .section-grid {
+    grid-template-columns: 1fr auto !important;
+    grid-template-rows: auto auto auto auto !important;
+    gap: 18px 5vw !important;
+  }
+
+  .curriculum-control {
+    width: min(390px, 32vw) !important;
+    margin-top: 0 !important;
+  }
+
+  .curriculum-control .programme-facts {
+    margin-top: 0 !important;
+  }
+
+  .curriculum-shift {
+    grid-template-columns: minmax(250px, 0.72fr) minmax(560px, 1.28fr) !important;
+    gap: 3vw !important;
+    margin-top: 0 !important;
+    padding: 12px 18px !important;
+  }
+
+  .curriculum-shift-copy {
+    grid-template-columns: auto auto !important;
+  }
+
+  .curriculum-shift-copy > span {
+    grid-column: 1 / -1 !important;
+  }
+
+  .tax-shift-node {
+    min-height: 48px !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+
+  .programme-columns {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+
+  .programme-column {
+    min-height: 330px !important;
+    border-right: 1px solid var(--line) !important;
+    border-bottom: 0 !important;
+  }
+
+  .programme-column:last-child {
+    border-right: 0 !important;
+  }
+
+  .programme-foot,
+  .site-footer {
+    flex-direction: row !important;
+    align-items: center !important;
+    margin-top: 0 !important;
+  }
+
+  .course-plan .section-grid {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    grid-template-rows: auto 1fr auto !important;
+    gap: 24px 5vw !important;
+  }
+
+  .course-plan-entry-wrap {
+    min-width: 245px !important;
+    margin-top: 0 !important;
+  }
+
+  .personal-term-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+
+  .personal-term {
+    min-height: 350px !important;
+    border-right: 1px solid var(--line) !important;
+    border-bottom: 0 !important;
+  }
+
+  .personal-term:last-child {
+    border-right: 0 !important;
+  }
+
+  .course-plan-foot {
+    flex-direction: row !important;
+    align-items: center !important;
+    margin-top: 0 !important;
+  }
+
+  .experience .section-grid {
+    grid-template-columns: minmax(400px, 0.95fr) minmax(600px, 1.05fr) !important;
+    grid-template-rows: 1fr auto !important;
+    column-gap: 5vw !important;
+    row-gap: 20px !important;
+  }
+
+  .experience-heading {
+    display: flex !important;
+  }
+
+  .experience-advice-lines {
+    max-width: 330px !important;
+    padding-top: 34px !important;
+  }
+
+  .takeaway {
+    grid-template-columns: 76px minmax(210px, 0.78fr) minmax(320px, 1.22fr) !important;
+    gap: 28px !important;
+    min-height: 128px !important;
+    padding: 0 !important;
+  }
+
+  .takeaway p {
+    grid-column: auto !important;
+  }
+
+  .closing-note {
+    margin-top: 0 !important;
+    grid-template-columns: auto minmax(0, 1fr) !important;
+    transform: rotate(-0.25deg) !important;
+  }
+
+  .contact .section-grid {
+    grid-template-columns: minmax(560px, 1.08fr) minmax(300px, 0.92fr) !important;
+    grid-template-rows: auto 1fr auto auto !important;
+    column-gap: 8vw !important;
+    row-gap: 18px !important;
+  }
+
+  .contact-heading {
+    display: flex !important;
+  }
+
+  .contact-stamp {
+    width: auto !important;
+    max-width: none !important;
+    min-width: 250px !important;
+    margin-top: 0 !important;
+  }
+
+  .contact-details,
+  .wechat-card,
+  .contact-closing,
+  .contact-footer {
+    margin-top: 0 !important;
+  }
+
+  .wechat-card {
+    width: min(320px, 24vw) !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+  }
+
+  .wechat-card > img {
+    max-height: 360px !important;
+  }
+
+  .contact-closing {
+    grid-template-columns: auto minmax(0, 1fr) !important;
+  }
+
+  .course-guide-hero {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: end !important;
+  }
+
+  .course-guide-stamp {
+    width: auto !important;
+    min-width: 260px !important;
+  }
+
+  .course-note-card {
+    grid-template-columns: minmax(360px, 0.86fr) minmax(540px, 1.14fr) !important;
+  }
+
+  .course-note-summary {
+    border-right: 1px solid var(--line) !important;
+    border-bottom: 0 !important;
+  }
+
+  .assessment-row {
+    grid-template-columns: minmax(112px, 0.35fr) 64px minmax(220px, 1fr) !important;
+  }
+
+  .assessment-row p {
+    grid-column: auto !important;
+  }
+
+  .required-intro-card {
+    grid-template-columns: auto minmax(0, 1fr) !important;
+  }
+
+  .required-term-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .required-term-grid article {
+    border-right: 1px solid var(--line) !important;
+    border-bottom: 0 !important;
+  }
+
+  .required-term-grid article:last-child {
+    border-right: 0 !important;
+  }
+
+  .required-term-grid ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .course-guide-footer {
+    flex-direction: row !important;
+    align-items: center !important;
+  }
+
+  .reveal,
+  .pdf-static,
+  .programme-facts,
+  .programme-columns,
+  .programme-column,
+  .programme-foot p,
+  .required-course-view,
+  .course-notes-grid {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+
+  .display-mask,
+  .route-overlay {
+    clip-path: none !important;
+  }
+
+  .route-overlay,
+  .portrait-frame,
+  .hero-copy > *,
+  .coordinate-stamp,
+  .field-seal {
+    opacity: 1 !important;
+  }
+
+  .coordinate-stamp {
+    transform: rotate(-2deg) !important;
+  }
+
+  .field-seal {
+    transform: rotate(-6deg) !important;
+  }
+
+  .project-reel-track {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .course-guide-main {
+    width: 16in !important;
+    max-width: none !important;
+    padding: 0.55in 0.6in 0.6in !important;
+  }
+
+  .course-note-card,
+  .required-intro-card,
+  .required-term-grid,
+  .course-guide-footer {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 }
