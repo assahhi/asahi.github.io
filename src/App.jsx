@@ -11,6 +11,7 @@ import {
   Compass,
   Database,
   EnvelopeSimple,
+  FilePdf,
   Gauge,
   GraduationCap,
   LinkSimple,
@@ -102,7 +103,7 @@ const personalCoursePlan = [
     title: "Term2 - Sem1",
     year: "2026",
     period: "9 月 — 12 月",
-    courses: ["Totally Fully for Intership"],
+    courses: ["完全实习之"],
     note: "选修实习课，summer结束后根据梦中情岗直接投递/补更多实习",
   },
   {
@@ -110,7 +111,7 @@ const personalCoursePlan = [
     title: "Term2 - Sem2",
     year: "2027",
     period: "1 月 — 5 月",
-    courses: ["Business Valuation and Financial Statement Analysis",],
+    courses: ["企业估值与财报分析",],
     note: "边实习边上课，完成最后一门选修课，毕业",
   },
 ];
@@ -317,6 +318,24 @@ function scrollToChapter(id) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+function exportAsPdf() {
+  window.print();
+}
+
+function ExportPdfButton({ className = "" }) {
+  return (
+    <button
+      className={`export-pdf-button ${className}`.trim()}
+      type="button"
+      onClick={exportAsPdf}
+      aria-label="导出为 PDF"
+    >
+      <FilePdf size={19} weight="bold" aria-hidden="true" />
+      <span>导出 PDF</span>
+    </button>
+  );
+}
+
 function Brand({ onClick = () => scrollToChapter("intro"), label = "返回开场" }) {
   return (
     <button className="brand" type="button" onClick={onClick} aria-label={label}>
@@ -334,7 +353,8 @@ function Header({ activeIndex }) {
     <header className="masthead">
       <Brand />
       <div className="masthead-meta">
-        <span>2026 新生 Orientation 分享</span>
+        <span>2026 Fall Orientation</span>
+        <ExportPdfButton />
         <span className="chapter-count">
           {String(activeIndex + 1).padStart(2, "0")} <i>/ {String(chapters.length).padStart(2, "0")}</i>
         </span>
@@ -719,7 +739,7 @@ function PersonalCoursePlan({ onOpenCourseGuide }) {
           <button className="course-plan-note" type="button" onClick={onOpenCourseGuide}>
             <span>TERM 1 · COURSE NOTES</span>
             <strong>查看课程理解</strong>
-            <small>4 门选修 · 内容与考核拆解</small>
+            <small>选修 · 内容与考核拆解</small>
             <ArrowRight size={20} weight="bold" aria-hidden="true" />
           </button>
         </Reveal>
@@ -887,10 +907,13 @@ function CourseGuide({ onBack }) {
     <div className="course-guide-page">
       <header className="masthead course-guide-masthead">
         <Brand onClick={onBack} label="返回课程安排" />
-        <button className="guide-back-button" type="button" onClick={onBack}>
-          <ArrowLeft size={19} weight="bold" />
-          返回课程地图
-        </button>
+        <div className="course-guide-header-actions">
+          <ExportPdfButton />
+          <button className="guide-back-button" type="button" onClick={onBack}>
+            <ArrowLeft size={19} weight="bold" />
+            返回课程地图
+          </button>
+        </div>
       </header>
 
       <main className="course-guide-main">
@@ -1025,7 +1048,6 @@ function Experience() {
             </div>
             <div className="experience-advice-lines">
               <p>焦虑是因为你有解决问题的能力。</p>
-              <p>祝各位在秋天开启新的故事。</p>
             </div>
           </Reveal>
           <ExperienceReel />
@@ -1052,11 +1074,6 @@ function Experience() {
           <blockquote>
             “项目给的是工具，真正的成长来自你如何连接课程、实习与同伴。”
           </blockquote>
-          <div className="closing-actions">
-            <button className="text-action" type="button" onClick={() => scrollToChapter("intro")}>
-              回到开场 <ArrowRight size={18} />
-            </button>
-          </div>
         </Reveal>
 
       </div>
@@ -1122,9 +1139,9 @@ function Contact() {
         </Reveal>
 
         <footer className="site-footer contact-footer">
-          <span>© 2026 刘璨玮 · 会计分析 Orientation 分享</span>
-          <span>Personal field notes · 持续更新</span>
-          <span>Designed for new beginnings.</span>
+          <span>© 2026 Asahi · AA</span>
+          <span>Based On Personal Experience</span>
+          <span>Designed for Freshers.</span>
         </footer>
       </div>
     </section>

@@ -137,6 +137,34 @@ a:focus-visible {
   letter-spacing: 0.02em;
 }
 
+.export-pdf-button,
+.course-guide-header-actions {
+  position: relative;
+  z-index: 1;
+}
+
+.export-pdf-button {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 15px;
+  border: 1px solid rgba(255, 249, 234, 0.46);
+  background: transparent;
+  color: #fff9ea;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.export-pdf-button:hover {
+  background: #fff9ea;
+  color: var(--purple-dark);
+  transform: translateY(-1px);
+}
+
 .chapter-count {
   display: flex;
   align-items: baseline;
@@ -1229,7 +1257,7 @@ a:focus-visible {
 .closing-note {
   grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
   gap: 24px;
   min-height: 106px;
@@ -1250,12 +1278,6 @@ a:focus-visible {
   font-size: clamp(17px, 1.65vw, 25px);
   line-height: 1.55;
   font-weight: 700;
-}
-
-.closing-actions {
-  display: flex;
-  align-items: center;
-  gap: 22px;
 }
 
 .site-footer {
@@ -1511,6 +1533,12 @@ a.contact-row:hover {
 html.course-guide-mode {
   scroll-snap-type: none;
   background: var(--paper);
+}
+
+.course-guide-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .course-guide-page {
@@ -2257,7 +2285,16 @@ html.course-guide-mode {
   }
 
   .masthead-meta {
-    gap: 0;
+    gap: 12px;
+  }
+
+  .masthead .export-pdf-button {
+    min-width: 40px;
+    padding: 0 9px;
+  }
+
+  .masthead .export-pdf-button span {
+    display: none;
   }
 
   .chapter {
@@ -2506,12 +2543,6 @@ html.course-guide-mode {
     transform: none;
   }
 
-  .closing-actions {
-    grid-column: auto;
-    flex-direction: column;
-    align-items: stretch;
-  }
-
   .chapter-rail {
     display: none;
   }
@@ -2580,6 +2611,10 @@ html.course-guide-mode {
     min-height: 36px;
     padding: 0 11px;
     font-size: 0;
+  }
+
+  .course-guide-header-actions {
+    gap: 8px;
   }
 
   .course-guide-masthead .guide-back-button svg {
@@ -2682,6 +2717,82 @@ html.course-guide-mode {
   .course-guide-footer {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+@media print {
+  @page {
+    size: 16in 9in;
+    margin: 0;
+  }
+
+  :root {
+    --masthead-h: 0px;
+    --page-x: 0.6in;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  html,
+  html.course-guide-mode,
+  body {
+    scroll-snap-type: none;
+    background: var(--paper);
+  }
+
+  body {
+    min-width: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .masthead,
+  .chapter-rail,
+  .project-reel-control,
+  .course-plan-note,
+  .text-action,
+  .course-type-toolbar,
+  .course-guide-footer .secondary-button {
+    display: none !important;
+  }
+
+  .chapter {
+    width: 16in;
+    height: 9in;
+    min-height: 9in;
+    padding-top: 0;
+    break-after: page;
+    page-break-after: always;
+    overflow: hidden;
+  }
+
+  .chapter:last-of-type {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  .hero-content,
+  .section-grid {
+    height: 9in;
+    min-height: 9in;
+  }
+
+  .course-guide-main {
+    width: 100%;
+    padding-top: 0.6in;
+  }
+
+  .course-note-card,
+  .required-intro-card,
+  .required-term-grid,
+  .course-guide-footer {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 }
 

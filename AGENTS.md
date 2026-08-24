@@ -21,5 +21,6 @@ When implementing from a selected generated mock, treat that image as the source
 - Use presentation-screen typography throughout B1, B2, and the Term 1 notes screen: secondary text must use larger, darker, heavier Noto Sans SC rather than tiny pale labels.
 - Keep the three C advice titles as “搭建学习体系”, “把握实习机会”, and “找到志同道合的伙伴”, with column widths that avoid orphaned Chinese characters.
 - End with a full-screen D contact chapter containing `canweiliu@link.cuhk.edu.cn`, WeChat `Asahhi_Liu`, the user's real QR image at a scannable size, and the closing line “新的故事会在秋风中慢慢开始”.
+- Keep the C chapter's yellow closing quote free of a “回到开场” action, and provide a top-level “导出 PDF” control on both the main chapter experience and the Term 1 course-notes screen.
 
 Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts/prepare-sites-build.mjs`, and `tests/sites-worker.test.mjs` intact so the same local prototype can be handed to Sites. Before a Sites handoff, run `npm run build` and `npm run test:sites`; the build must leave `dist/client/index.html`, `dist/server/index.js`, and `dist/.openai/hosting.json`.
