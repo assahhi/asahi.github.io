@@ -103,7 +103,7 @@ const personalCoursePlan = [
     title: "Term2 - Sem1",
     year: "2026",
     period: "9 月 — 12 月",
-    courses: ["完全实习之"],
+    courses: ["美美实习之～"],
     note: "选修实习课，summer结束后根据梦中情岗直接投递/补更多实习",
   },
   {
@@ -449,7 +449,7 @@ function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.48 }}
           >
-            一份新生开学路线图
+            新生开学路线图
           </motion.h2>
           <motion.div
             className="byline"
@@ -466,9 +466,7 @@ function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.78 }}
           >
-            从自我介绍，到项目拆解，再到真实体验——
-            <br />
-            把我走过的路，变成你更好出发的坐标。
+            把我走过的路，变成你更好出发的坐标
           </motion.p>
           <motion.div
             className="hero-actions"
@@ -492,14 +490,25 @@ function Hero() {
           >
             22.5431°N, 114.0579°E
           </motion.div>
-          <motion.div
+          <motion.figure
             className="portrait-frame"
             initial={reduceMotion ? false : { opacity: 0, x: 42, scale: 0.97 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             transition={{ duration: 0.95, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
           >
-            <img src={assetUrl("assets/liu-canwei-portrait-web.jpg")} alt="刘璨玮证件照" />
-          </motion.div>
+            <div className="portrait-backdrop" aria-hidden="true">
+              <img src={assetUrl("assets/liu-canwei-field-backdrop.webp")} alt="" />
+            </div>
+            <img
+              className="portrait-subject"
+              src={assetUrl("assets/liu-canwei-field-portrait-cutout.webp")}
+              alt="刘璨玮旅行人物照"
+            />
+            <figcaption>
+              <span>PORTRAIT / 01</span>
+              <strong>从这里，出发</strong>
+            </figcaption>
+          </motion.figure>
           <motion.img
             className="route-overlay"
             src={assetUrl("assets/route-overlay.png")}
@@ -542,9 +551,9 @@ function About() {
       <div className="section-grid">
         <Reveal className="section-heading">
           <p className="eyebrow">A / 关于我 · ORIGIN</p>
-          <h2>从智能财务出发，<br />把数据带进业务现场</h2>
+          <h2>从智能财务<br />到会计分析</h2>
           <p className="lead">
-            我关心的不只是数字对不对，更是它能否让一个真实问题变得清楚、可解释、可行动。
+            我关心数据能否让一个真实问题变得清楚、可解释、可行动。
           </p>
         </Reveal>
 
@@ -565,15 +574,15 @@ function About() {
         <Reveal className="data-strip" delay={0.18}>
           <div>
             <GraduationCap size={24} weight="duotone" />
-            <span><strong>3.94</strong> 港中深 GPA</span>
+            <span><strong>40,000+</strong>份年报清洗</span>
           </div>
           <div>
             <Database size={24} weight="duotone" />
-            <span><strong>40,000+</strong> 份年报清洗</span>
+            <span><strong>31</strong> 个行业主题挖掘</span>
           </div>
           <div>
             <ChartLineUp size={24} weight="duotone" />
-            <span><strong>31</strong> 个行业主题挖掘</span>
+            <span><strong>10</strong> 年财报结构趋势</span>
           </div>
         </Reveal>
       </div>
@@ -624,9 +633,9 @@ function Programme() {
       <div className="section-grid">
         <Reveal className="section-heading programme-heading">
           <p className="eyebrow">B1 / 项目介绍 · COURSE CATALOGUE</p>
-          <h2>课纲升级，方向更清晰</h2>
+          <h2>课纲调整</h2>
           <p className="lead">
-            2026 级将课程结构从 7+5 调整为 6+6，并把“中国税法”由必修课转入 PA 方向选修课。
+            2026 级由 7+5 调整为 6+6，"中国税法"由必修课转入 PA 方向选修课（同时也成为豁免HKICPA的必修课）
           </p>
         </Reveal>
 
@@ -661,8 +670,8 @@ function Programme() {
         <Reveal className="curriculum-shift" delay={0.12}>
           <div className="curriculum-shift-copy">
             <span>CURRICULUM SHIFT · 2025 → 2026</span>
-            <strong>7+5 调整为 6+6</strong>
-            <small>一门主修课转为方向选修课</small>
+            <strong>总学分不变</strong>
+            <small>同类选修满3门即可确认方向</small>
           </div>
           <div className="tax-shift-map" aria-label="中国税法由2025级必修课调整为2026级PA方向选修课">
             <motion.div

@@ -11,6 +11,7 @@ When implementing from a selected generated mock, treat that image as the source
 - Build the third ideation direction: an editorial campus-atlas / field-guide website.
 - The final desktop experience is designed as full-screen 16:9 chapters with vertical scroll snapping.
 - Preserve the CUHK-Shenzhen purple, warm paper, coordinate stamps, map-route motif, real portrait, and restrained motion language.
+- Use the main person from `IMG_3934.JPG` as the opening portrait. Keep the real low-angle pose, retain a subdued trace of the prayer-flag setting, and use a transparent cutout plus editorial layering so the vivid source colors do not overpower the purple-and-paper system.
 - The six full-screen chapters are opening, about, official programme courses (B1), the user's personal course map (B2), comprehensive experience (C), and contact (D); the deployed version also includes a same-origin backend endpoint for dynamic orientation advice.
 - Keep B1 as three list columns: shared required courses, AA electives, and PA electives. Keep B2 as a dedicated editable 24-month personal course-plan page rather than combining it with the official programme page.
 - B2 covers the four formal semesters only (2025, 2026, 2026, 2027); omit the summer pre-course because the orientation audience has already enrolled.

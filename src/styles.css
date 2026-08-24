@@ -315,41 +315,102 @@ a:focus-visible {
   position: relative;
   z-index: 1;
   align-self: stretch;
-  min-height: 480px;
+  min-height: 500px;
 }
 
 .portrait-frame {
   position: absolute;
   z-index: 2;
-  width: min(33vw, 480px);
-  height: min(68vh, 650px);
-  right: 6%;
-  bottom: 1%;
-  overflow: hidden;
-  border-radius: 48% 48% 42% 42% / 38% 38% 56% 56%;
-  background: #e6e1d8;
-  box-shadow: inset 0 0 0 1px rgba(75, 33, 122, 0.08);
+  width: min(37vw, 540px);
+  height: min(69vh, 665px);
+  right: 0;
+  bottom: -1%;
+  margin: 0;
 }
 
-.portrait-frame::after {
+.portrait-frame::before {
   content: "";
   position: absolute;
-  inset: 0;
-  box-shadow: inset 0 -72px 90px rgba(53, 22, 79, 0.08);
+  z-index: 0;
+  inset: 2% -1% -1% 7%;
+  border: 1px solid rgba(75, 33, 122, 0.3);
+  clip-path: polygon(14% 0, 100% 0, 100% 86%, 86% 100%, 0 100%, 0 14%);
   pointer-events: none;
 }
 
-.portrait-frame img {
+.portrait-backdrop {
+  position: absolute;
+  z-index: 1;
+  inset: 5% 1% 2% 9%;
+  overflow: hidden;
+  clip-path: polygon(14% 0, 100% 0, 100% 86%, 86% 100%, 0 100%, 0 14%);
+  background: var(--purple-dark);
+  box-shadow: 18px 20px 0 rgba(75, 33, 122, 0.1);
+}
+
+.portrait-backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(145deg, rgba(53, 22, 79, 0.5), rgba(53, 22, 79, 0.05) 46%, rgba(198, 161, 91, 0.16)),
+    linear-gradient(0deg, rgba(42, 18, 63, 0.32), transparent 48%);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.portrait-backdrop img {
   width: 100%;
   height: 100%;
+  object-fit: cover;
+  object-position: 50% 42%;
+  filter: saturate(0.62) contrast(0.96) brightness(0.83) sepia(0.08);
+  transform: scale(1.04);
+}
+
+.portrait-subject {
+  position: absolute;
+  z-index: 3;
+  right: -3%;
+  bottom: -4%;
+  width: auto;
+  height: 104%;
+  max-width: none;
   object-fit: contain;
-  object-position: 50% 50%;
-  transform: scale(1.02);
+  filter: drop-shadow(-18px 22px 28px rgba(26, 11, 39, 0.24));
+}
+
+.portrait-frame figcaption {
+  position: absolute;
+  z-index: 4;
+  top: 9%;
+  right: -2%;
+  display: grid;
+  gap: 2px;
+  min-width: 132px;
+  padding: 10px 13px 11px;
+  border-top: 3px solid var(--gold);
+  background: rgba(245, 241, 232, 0.9);
+  color: var(--purple-dark);
+  box-shadow: 7px 8px 0 rgba(42, 18, 63, 0.1);
+  backdrop-filter: blur(8px);
+}
+
+.portrait-frame figcaption span {
+  color: var(--red);
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+}
+
+.portrait-frame figcaption strong {
+  font-size: 13px;
+  letter-spacing: 0.08em;
 }
 
 .route-overlay {
   position: absolute;
-  z-index: 3;
+  z-index: 4;
   width: min(29vw, 405px);
   height: 92%;
   right: -8%;
@@ -2344,21 +2405,34 @@ html.course-guide-mode {
   }
 
   .hero-visual {
-    min-height: 380px;
-    margin-top: -30px;
+    min-height: 430px;
+    margin-top: -24px;
   }
 
   .portrait-frame {
-    width: min(88vw, 420px);
-    height: 420px;
-    right: -12%;
-    bottom: -12%;
+    width: min(104vw, 460px);
+    height: 450px;
+    right: -17%;
+    bottom: -7%;
   }
 
-  .portrait-frame img {
-    object-fit: cover;
-    object-position: 50% 28%;
-    transform: scale(1.04);
+  .portrait-backdrop {
+    inset: 7% 3% 4% 13%;
+  }
+
+  .portrait-backdrop img {
+    object-position: 50% 42%;
+  }
+
+  .portrait-subject {
+    right: -1%;
+    bottom: -3%;
+    height: 102%;
+  }
+
+  .portrait-frame figcaption {
+    top: 11%;
+    right: 10%;
   }
 
   .route-overlay {
@@ -3005,16 +3079,24 @@ html.course-guide-mode {
   }
 
   .portrait-frame {
-    width: min(33vw, 480px) !important;
-    height: min(68vh, 650px) !important;
-    right: 6% !important;
-    bottom: 1% !important;
+    width: min(37vw, 540px) !important;
+    height: min(69vh, 665px) !important;
+    right: 0 !important;
+    bottom: -1% !important;
   }
 
-  .portrait-frame img {
-    object-fit: contain !important;
-    object-position: 50% 50% !important;
-    transform: scale(1.02) !important;
+  .portrait-backdrop img {
+    object-fit: cover !important;
+    object-position: 50% 42% !important;
+    transform: scale(1.04) !important;
+  }
+
+  .portrait-subject {
+    right: -3% !important;
+    bottom: -4% !important;
+    width: auto !important;
+    height: 104% !important;
+    transform: none !important;
   }
 
   .route-overlay {
